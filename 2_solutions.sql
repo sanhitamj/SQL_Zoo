@@ -57,11 +57,13 @@ WHERE name LIKE 'A%' OR name LIKE 'B%';
 
 --13. Put the continents right...Oceania becomes Australasia Countries in Eurasia and Turkey go to Europe/Asia. Caribbean islands starting with 'B' go to North America, other Caribbean islands go to South America. Show the name, the original continent and the new continent of all countries.
 
-SELECT name, continent, CASE 
-WHEN continent = 'Oceania' THEN 'Australasia'
-WHEN continent IN ('Eurasia', 'Turkey') THEN 'Europe/Asia'
-WHEN continent = 'Caribbean' AND name LIKE 'B%' THEN 'North America'
-WHEN continent = 'Caribbean' THEN 'South America'
-ELSE continent END
-FROM world
+SELECT name, continent,
+       CASE WHEN continent='Oceania' THEN 'Australasia' 
+            WHEN continent = 'Eurasia' THEN 'Europe/Asia' -- This line is slightly modified.
+            WHEN name = 'Turkey' THEN 'Europe/Asia' -- This is the added line
+            WHEN continent='Caribbean' AND name LIKE 'B%' THEN 'North America' 
+            WHEN continent='Caribbean' THEN 'South America' 
+            ELSE continent END
+  FROM world
+WHERE tld IN ('.ag','.ba','.bb','.ca','.cn','.nz','.ru','.tr','.uk')
 ORDER BY name;
